@@ -33,12 +33,10 @@ h1 {
     width: 70%;
     height: 70%;
     margin: 100px auto;
-    padding: 50px;
+    padding: 30px;
     position: relative;
-    border-radius: 5px;
     text-align: center;
      overflow-y: scroll;
-    max-height: 700px;
     font-family: 'arial';
     border-radius: 40px;
 }
