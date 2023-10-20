@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Endangered Allies Memory Game</title>
+  <link rel="stylesheet" type="text/css" href="main.css">
+    <style>
+
+h1 img {
+
+width: 1000px;
+
+height: auto;
+
+}
+        #timer {
+  font-size: 40px; /* Change the font size to your preferred value */
+}
+
+#leaderboard {
+  font-size: 50px; /* Change the font size to your preferred value */
+}
+
+
+</style>
+</head>
+<body>
+
+    <h1><img src="img/title.png" alt="Memory Game"></h1>
+       
+
+    
+  <div id="gameBoard"></div>
+    <p id="timer"></p>
+    <button onclick="restartGame()">Restart</button>
+
+     <div id="leaderboard">
+  <!-- Replace the text with an image and set the width and height attributes -->
+  <img src="img/leaderboard.png" alt="Leaderboard Title" width="00" height="100">
+         
+</div>
+
+
+
+  
+<div id="animal-popup" class="popup">
+  <div class="popup-content">
+    <span class="close" onclick="closePopup()">&times;</span>
+    <img id="animal-image" src="" alt="Animal Image">
+    <div id="animal-info" class="animal-info"></div>
+  </div>
+</div>
+
+
+    <script>
+    var cards = [
+        'img/1.png',
+        'img/1.png',
+        'img/2.png',
+        'img/2.png',
+        'img/3.png',
+        'img/3.png',
+        'img/4.png',
+        'img/4.png',
+        'img/5.png',
+        'img/5.png',
+        'img/6.png',
+        'img/6.png',
+        'img/delhi.png',
+        'img/delhi.png',
+        'img/crane.png',
+        'img/crane.png',
+        'img/polarb.png',
+        'img/polarb.png',
+        'img/seal.png',
+        'img/seal.png',
+        'img/turtle.png',
+        'img/turtle.png',
+        'img/leop.png',
+        'img/leop.png'
+    ];
+        
+    
+var cardInfoMap = {
+  'img/1.png': {
+     info: '<p>Status: Vulnerable</p>\n<p>Threats to Species: Climate Change (Habitat Loss), Pollution</p>\n<p>Region: The Arctic</p>\n<p>Polar Bears have white fur and a thick layer of fat: but did you know they have black skin? Among other bears, polar bears are one of the largest and strongest! They’re usually solitary, save for mothers with cubs, couples, and the occasional alliances made between bears!</p>\n<p>They prefer to hunt seals due to their energy-rich blubber, but have also hunted beluga whales and walruses. Polar bears are clever, and have different hunting methods for different prey! For seals on land, they keep their head low and carefully close the distance, unseen… before suddenly charging, trying to catch them before they escape through an ice hole!</p>',
+    image: 'img/pbinfo.png',
+  },
+  'img/2.png': {
+    info: '<p>Status: Vulnerable</p>\n<p>Threats to Species:</p> Habitat Loss, Illegal Wildlife trade, Trophy Hunting\n<p>Region: Africa, Central Asia, India, China\n<p>Leopards rely on stealth, an acute sense of hearing, and superior vision to hunt. Solitary hunters, most prefer to hunt during the night, from dusk to dawn. They stalk their prey as close as they can, undetected... before <strong>pouncing,</strong> ambushing it!</p>\n<p>Leopards have strong jaws: enough to drag larger, heavier prey up into the trees with them to eat. Some are stored safely away in trees, bushes, or even in caves as a private food supply to snack on later. This is to avoid competition, who might want to eat some of the wild cat’s share!</p>',
+    image: 'img/linfo.png',
+  },
+  'img/3.png': {
+    info: '<p>Status: Endangered</p>\n<p>Threats to Species: Drainage, Overgrazing, Pesticide Pollution</p>\n<p>Region: Sub-Saharan Africa</p>\n<p>This species time their breeding season around rain! In Southern Africa, they time it with rainfall. In East Africa, the species breeds all year round, but prefer drier periods. Breeding and courtship displays involve dancing, bowing, and jumping; and both sexes dance for each other.\nGrey Crowned Cranes are omnivores, eating food like insects, plants, snakes, small fish, and worms. They stamp their feet to make insects scatter so they may catch and eat them!\nThis beautiful bird is also the national bird of Uganda, and is found on the country’s flag! </p>',
+    image: 'img/gcinfo.png',
+  },
+  'img/4.png': {
+    info: '<p>Status: Endangered</p>\n<p>Threats to Species: Pollution, Poaching, Habitat Loss</p>\n<p>Region: Worldwide (Tropical & Subtropical Waters)</p>\n<p>The Green Sea Turtle earned its name not from the colour of its shell, but the green fat underneath! The colour comes from its plant-based diet!</p>\n<p>Juveniles start out with a carnivorous diet, eating fish, jellyfish, crustaceans, and eggs of other animals. As they become adults, they start eating algae, sea grasses, and other plants: most adults are strictly herbivores!</p>\n<p>Humans and tiger sharks are the main predators of adult green sea turtles. Juveniles and hatchlings have crabs and shorebirds, and scavengers like to eat the turtles’ eggs! On top of that, many sea turtles have to deal with parasites like barnacles and leeches!</p>',
+    image: 'img/ttinfo.png',
+  },
+  'img/5.png': {
+    info: '<p>Status: Endangered</p>\n<p>Threats to Species: Pollution, Disease, Climate Change, Scarce Food, Invasive Species</p>\n<p>Region: Galápagos Islands</p>\n<p>This seal species is the smallest of all furred ear seals! They also don’t have constant predators; sharks and orcas, the main predators for seals, don’t usually have migratory patterns that pass by the Galápagos.</p>\n<p>Among all seal species, the Galapagos Fur Seals have the lowest reproductive rates, and seal pups take a long time to become independent. They are born one at a time, and spend their first 18 months relying on their mother’s milk; but this sadly can be delayed up to 3 years if conditions are poor!</p>\n<p>If they make it, their new diet consists of fish, squid, and shellfish. Food found closer to the shores, and they like to hunt at night so it’s easier to hunt for them!</p>',
+    image: 'img/sinfo.png',
+  },
+  'img/6.png': {
+    info: '<p>Status: Endangered</p>\n<p>Threats to Species: Habitat Loss (Building Development, Cow Manure Dumping), Pollution, Invasive Species, Vehicle Use</p>\n<p>Region: Delhi Sand Dunes (Southern California)</p>\n<p>The Delhi Sands Flower-Loving Fly is the first fly species to be listed on the Endangered Species List in the US.</p>\n<p>This insect lives almost its entire life underground: only emerging as adults in early summer, becoming active for a few weeks each year to feed on flowers from June to September.</p>\n<p>Researchers don’t yet know how long their average lifespans are! In fact, there’s only an educated guess that their larval stage lasts for 2 years! Similarly, it’s rare to see this fly feeding- and it only seems to feed from just one plant: the flowers of the California buckwheat.</p>\n<p>Being an insect, it has many enemies. Its predators include the Argentine ant, other large flies… and suspected predators like birds and dragonflies. One thing’s for sure: this species sure is a mysterious one!</p>',
+    image: 'img/dhinfo.png',
+  },
+  'img/delhi.png': {
+    info: '<p>Status: Endangered</p>\n<p>Threats to Species: Habitat Loss (Building Development, Cow Manure Dumping), Pollution, Invasive Species, Vehicle Use</p>\n<p>Region: Delhi Sand Dunes (Southern California)</p>\n<p>The Delhi Sands Flower-Loving Fly is the first fly species to be listed on the Endangered Species List in the US.</p>\n<p>This insect lives almost its entire life underground: only emerging as adults in early summer, becoming active for a few weeks each year to feed on flowers from June to September.</p>\n<p>Researchers don’t yet know how long their average lifespans are! In fact, there’s only an educated guess that their larval stage lasts for 2 years! Similarly, it’s rare to see this fly feeding- and it only seems to feed from just one plant: the flowers of the California buckwheat.</p>\n<p>Being an insect, it has many enemies. Its predators include the Argentine ant, other large flies… and suspected predators like birds and dragonflies. One thing’s for sure: this species sure is a mysterious one!</p>',
+    image: 'img/dhinfo.png',
+  },
+  'img/crane.png': {
+    info: '<p>Status: Endangered</p>\n<p>Threats to Species: Drainage, Overgrazing, Pesticide Pollution</p>\n<p>Region: Sub-Saharan Africa</p>\n<p>This species time their breeding season around rain! In Southern Africa, they time it with rainfall. In East Africa, the species breeds all year round, but prefer drier periods. Breeding and courtship displays involve dancing, bowing, and jumping; and both sexes dance for each other.\nGrey Crowned Cranes are omnivores, eating food like insects, plants, snakes, small fish, and worms. They stamp their feet to make insects scatter so they may catch and eat them!\nThis beautiful bird is also the national bird of Uganda, and is found on the country’s flag! </p>',
+    image: 'img/gcinfo.png',
+  },
+  'img/polarb.png': {
+    info: '<p>Status: Vulnerable</p>\n<p>Threats to Species: Climate Change (Habitat Loss), Pollution</p>\n<p>Region: The Arctic</p>\n<p>Polar Bears have white fur and a thick layer of fat: but did you know they have black skin? Among other bears, polar bears are one of the largest and strongest! They’re usually solitary, save for mothers with cubs, couples, and the occasional alliances made between bears!</p>\n<p>They prefer to hunt seals due to their energy-rich blubber, but have also hunted beluga whales and walruses. Polar bears are clever, and have different hunting methods for different prey! For seals on land, they keep their head low and carefully close the distance, unseen… before suddenly charging, trying to catch them before they escape through an ice hole!</p>',
+    image: 'img/pbinfo.png',
+  },
+  'img/seal.png': {
+    info: '<p>Status: Endangered</p>\n<p>Threats to Species: Pollution, Disease, Climate Change, Scarce Food, Invasive Species</p>\n<p>Region: Galápagos Islands</p>\n<p>This seal species is the smallest of all furred ear seals! They also don’t have constant predators; sharks and orcas, the main predators for seals, don’t usually have migratory patterns that pass by the Galápagos.</p>\n<p>Among all seal species, the Galapagos Fur Seals have the lowest reproductive rates, and seal pups take a long time to become independent. They are born one at a time, and spend their first 18 months relying on their mother’s milk; but this sadly can be delayed up to 3 years if conditions are poor!</p>\n<p>If they make it, their new diet consists of fish, squid, and shellfish. Food found closer to the shores, and they like to hunt at night so it’s easier to hunt for them!</p>',
+    image: 'img/sinfo.png',
+  },
+  'img/turtle.png': {
+    info: '<p>Status: Endangered</p>\n<p>Threats to Species: Pollution, Poaching, Habitat Loss</p>\n<p>Region: Worldwide (Tropical & Subtropical Waters)</p>\n<p>The Green Sea Turtle earned its name not from the colour of its shell, but the green fat underneath! The colour comes from its plant-based diet!</p>\n<p>Juveniles start out with a carnivorous diet, eating fish, jellyfish, crustaceans, and eggs of other animals. As they become adults, they start eating algae, sea grasses, and other plants: most adults are strictly herbivores!</p>\n<p>Humans and tiger sharks are the main predators of adult green sea turtles. Juveniles and hatchlings have crabs and shorebirds, and scavengers like to eat the turtles’ eggs! On top of that, many sea turtles have to deal with parasites like barnacles and leeches!</p>',
+    image: 'img/ttinfo.png',
+  },
+  'img/leop.png': {
+    info: '<p>Status: Vulnerable</p>\n<p>Threats to Species:</p> Habitat Loss, Illegal Wildlife trade, Trophy Hunting\n<p>Region: Africa, Central Asia, India, China\n<p>Leopards rely on stealth, an acute sense of hearing, and superior vision to hunt. Solitary hunters, most prefer to hunt during the night, from dusk to dawn. They stalk their prey as close as they can, undetected... before <strong>pouncing,</strong> ambushing it!</p>\n<p>Leopards have strong jaws: enough to drag larger, heavier prey up into the trees with them to eat. Some are stored safely away in trees, bushes, or even in caves as a private food supply to snack on later. This is to avoid competition, who might want to eat some of the wild cat’s share!</p>',
+    image: 'img/linfo.png',
+  },
+
+};
+
+        
+
+    var gameBoard = document.getElementById('gameBoard');
+  var flippedCards = [];
+  var matchedCards = [];
+  var isPopupOpen = false;
+
+    var timerElement = document.getElementById('timer');
+    var seconds = 0;
+    var timerInterval;
+
+    var leaderboard = JSON.parse(localStorage.getItem('leaderboard')) || [];
+
+    cards.sort(() => Math.random() - 0.5);
+
+    for (var i = 0; i < cards.length; i++) {
+        var card = document.createElement('div');
+        card.className = 'card';
+        card.dataset.value = cards[i];
+        gameBoard.appendChild(card);
+        card.addEventListener('click', flipCard);
+    }
+
+    function flipCard() {
+        if (flippedCards.length < 2 && !matchedCards.includes(this)) {
+            this.style.backgroundImage = `url(${this.dataset.value})`;
+            this.classList.add('hidden');
+            flippedCards.push(this);
+
+            if (flippedCards.length === 2) {
+                setTimeout(checkForMatch, 1000);
+            }
+        }
+    }
+
+    var isPopupOpen = false; // Add this variable to track the pop-up state
+        
+        
+
+function checkForMatch() {
+  var card1 = flippedCards[0];
+  var card2 = flippedCards[1];
+
+  if (card1.dataset.value === card2.dataset.value) {
+    matchedCards.push(card1, card2);
+    card1.removeEventListener('click', flipCard);
+    card2.removeEventListener('click', flipCard);
+
+    if (!isPopupOpen) {
+  
+  showPopup(card1.dataset.value);
+  isPopupOpen = true; // Set the pop-up state to open
+  clearInterval(timerInterval); // Stop the timer
+}
+
+  } else {
+    card1.style.backgroundImage = '';
+    card1.classList.remove('hidden');
+    card2.style.backgroundImage = '';
+    card2.classList.remove('hidden');
+  }
+
+  flippedCards = [];
+
+  if (matchedCards.length === cards.length) {
+    var record = getRecord();
+    if (seconds < record || record === 0) {
+      setRecord(seconds);
+      alert('Congratulations! You have a new record!');
+    } else {
+      alert('Congratulations! You have won the game!');
+    }
+  }
+}
+
+function closePopup() {
+  var animalPopup = document.getElementById('animal-popup');
+  animalPopup.style.display = 'none';
+  isPopupOpen = false; // Set the pop-up state to closed
+  timerInterval = setInterval(updateTimer, 1000); // Resume the timer
+}
+
+function showPopup(cardValue) {
+    var cardInfo = cardInfoMap[cardValue];
+    if (cardInfo) {
+      document.getElementById('animal-popup').style.display = 'block';
+      document.getElementById('animal-image').src = cardInfo.image;
+      document.getElementById('animal-info').innerHTML = cardInfo.info;
+    }
+  }
+
+  // Create the cards dynamically using JavaScript
+  for (var i = 0; i < cards.length; i++) {
+    var card = document.createElement('div');
+    card.className = 'card';
+    card.dataset.value = cards[i];
+    gameBoard.appendChild(card);
+    card.addEventListener('click', flipCard);
+  }
+
+
+
+    function restartGame() {
+    gameBoard.innerHTML = '';
+    flippedCards = [];
+    matchedCards = [];
+    seconds = 0;
+    timerElement.textContent = '0s';
+
+    cards.sort(() => Math.random() - 0.5);
+
+    for (var i = 0; i < cards.length; i++) {
+        var card = document.createElement('div');
+        card.className = 'card';
+        card.dataset.value = cards[i];
+        gameBoard.appendChild(card);
+        card.addEventListener('click', flipCard);
+    }
+
+    clearInterval(timerInterval);
+    timerInterval = setInterval(updateTimer, 1000);
+    
+    isPopupOpen = false; // Reset the pop-up state
+}
+
+
+    function updateTimer() {
+        seconds++;
+        timerElement.textContent = `${seconds}s`;
+    }
+
+    function getRecord() {
+        return leaderboard.length > 0 ? leaderboard[0].time : 0;
+    }
+
+    function setRecord(time) {
+  // Create a modal to input the player's name
+  var modal = document.createElement('div');
+  modal.className = 'modal';
+  
+  var modalContent = document.createElement('div');
+  modalContent.className = 'modal-content';
+  modal.appendChild(modalContent);
+
+  var nameInput = document.createElement('input');
+  nameInput.setAttribute('type', 'text');
+  nameInput.setAttribute('placeholder', 'Enter your name');
+  
+  var submitButton = document.createElement('button');
+  submitButton.textContent = 'Submit';
+
+  modalContent.appendChild(nameInput);
+  modalContent.appendChild(submitButton);
+
+  // Function to handle submit
+  submitButton.addEventListener('click', function() {
+    var playerName = nameInput.value;
+    if (playerName.trim() !== '') {
+      // Create a new record object with player name and time
+      var newRecord = {
+        name: playerName,
+        time: time
+      };
+
+      leaderboard.push(newRecord);
+
+      // Sort the leaderboard based on time
+      leaderboard.sort((a, b) => a.time - b.time);
+
+      // Keep only the top 20 records
+      if (leaderboard.length > 20) {
+        leaderboard.pop(); // Remove the last (highest time) record if there are more than 20
+      }
+
+      // Store the updated leaderboard in local storage
+      localStorage.setItem('leaderboard', JSON.stringify(leaderboard));
+
+      displayLeaderboard();
+
+      // Close the modal
+      document.body.removeChild(modal);
+    }
+  });
+
+  // Append the modal to the body
+  document.body.appendChild(modal);
+}
+
+
+
+// ...
+
+    function displayLeaderboard() {
+  var leaderboardElement = document.getElementById('leaderboard');
+  leaderboardElement.innerHTML = '';
+
+  var leaderboardTitle = document.createElement('h2');
+  leaderboardTitle.textContent = 'Leaderboard';
+  leaderboardElement.appendChild(leaderboardTitle);
+
+  if (leaderboard.length > 0) {
+    var leaderboardTable = document.createElement('table');
+    leaderboardElement.appendChild(leaderboardTable);
+
+    var tableHeader = document.createElement('thead');
+    var headerRow = document.createElement('tr');
+    var rankHeader = document.createElement('th');
+    var playerHeader = document.createElement('th');
+    var timeHeader = document.createElement('th');
+
+    rankHeader.textContent = 'Rank';
+    playerHeader.textContent = 'Player Name';
+    timeHeader.textContent = 'Time';
+
+    rankHeader.className = 'rank'; // Add rank class
+    playerHeader.className = 'player-name'; // Add player-name class
+    timeHeader.className = 'time'; // Add time class
+
+    headerRow.appendChild(rankHeader);
+    headerRow.appendChild(playerHeader);
+    headerRow.appendChild(timeHeader);
+
+    tableHeader.appendChild(headerRow);
+    leaderboardTable.appendChild(tableHeader);
+
+    var leaderboardList = document.createElement('tbody');
+    leaderboardTable.appendChild(leaderboardList);
+
+    leaderboard.forEach(function (record, index) {
+      var listItem = document.createElement('tr');
+      var rankCell = document.createElement('td');
+      var playerCell = document.createElement('td');
+      var timeCell = document.createElement('td');
+
+      rankCell.textContent = index + 1;
+      playerCell.textContent = record.name;
+      timeCell.textContent = record.time + 's';
+
+      listItem.appendChild(rankCell);
+      listItem.appendChild(playerCell);
+      listItem.appendChild(timeCell);
+
+      leaderboardList.appendChild(listItem);
+    });
+
+    leaderboardElement.appendChild(leaderboardTable);
+  } else {
+    var noRecordMessage = document.createElement('p');
+    noRecordMessage.textContent = 'No records yet.';
+    leaderboardElement.appendChild(noRecordMessage);
+  }
+}
+
+
+
+
+    function showAnimalInfo(animalName) {
+  var animalData = getAnimalData(animalName);
+  if (animalData) {
+    document.getElementById('animal-popup').style.display = 'block';
+    document.getElementById('animal-image').src = animalData.imageURL;
+    document.getElementById('animal-info').textContent = animalData.info;
+  }
+}
+
+function getAnimalData(animalName) {
+  // Define information and image URLs for each animal
+  var animalInfo = {
+    'Turtle': {
+      info: 'Turtles are reptiles and many species are threatened or endangered due to habitat destruction and poaching.',
+      imageURL: 'img/turtle.jpg'
+    },
+    // Add more animals and their information here
+  };
+
+  return animalInfo[animalName];
+}
+
+
+    displayLeaderboard();
+    restartGame();
+    </script>
+</body>
+</html>
