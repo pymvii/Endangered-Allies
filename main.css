@@ -1,5 +1,5 @@
 body {
-  font-family: 'Modak', cursive, sans-serif;
+  font-family: 'modak', Arial;
   background-color: #f1f1f1;
   text-align: center;
   margin: 0;
@@ -8,13 +8,25 @@ body {
 
 
 h1 {
-  font-family: 'Modak', cursive;
+  font-family: 'modak', Arial;
   color: #fff;
   font-size: 0px;
   margin-top: 20px;
     margin-bottom: 30px;
   text-shadow: 2px 2px 4px #FFA500;
 }
+
+@font-face {
+  font-family: 'modak';
+  src: url('modak-regular.ttf') format('ttf');
+  /* Add additional src entries for other font formats if necessary */
+}
+
+/* Apply the font to an element */
+body {
+  font-family: 'modak', Arial;
+}
+
 
 .popup {
   display: none;

@@ -3,53 +3,38 @@
 <head>
   <title>Endangered Allies Memory Game</title>
   <link rel="stylesheet" type="text/css" href="main.css">
-    <style>
-
-h1 img {
-
-width: 1000px;
-
-height: auto;
-
-}
-        #timer {
-  font-size: 40px; /* Change the font size to your preferred value */
-}
-
-#leaderboard {
-  font-size: 50px; /* Change the font size to your preferred value */
-}
-
-
-</style>
+  <link rel="preload" href="Modak/Modak-Regular.ttf" as="font" type="font/ttf" crossorigin>
+  <style>
+    h1 img {
+      max-width: 100%;
+      height: auto;
+    }
+    #timer {
+      font-size: 40px;
+    }
+    #leaderboard {
+      font-size: 50px;
+    }
+  </style>
 </head>
 <body>
+  <h1><img src="img/title.png" alt="Memory Game"></h1>
 
-    <h1><img src="img/title.png" alt="Memory Game"></h1>
-       
-
-    
   <div id="gameBoard"></div>
-    <p id="timer"></p>
-    <button onclick="restartGame()">Restart</button>
+  <p id="timer"></p>
+  <button onclick="restartGame()">Restart</button>
 
-     <div id="leaderboard">
-  <!-- Replace the text with an image and set the width and height attributes -->
-  <img src="img/leaderboard.png" alt="Leaderboard Title" width="00" height="100">
-         
-</div>
-
-
-
-  
-<div id="animal-popup" class="popup">
-  <div class="popup-content">
-    <span class="close" onclick="closePopup()">&times;</span>
-    <img id="animal-image" src="" alt="Animal Image">
-    <div id="animal-info" class="animal-info"></div>
+  <div id="leaderboard">
+    <img src="img/leaderboard.png" alt="Leaderboard Title" width="200" height="100">
   </div>
-</div>
 
+  <div id="animal-popup" class="popup">
+    <div class="popup-content">
+      <span class="close" onclick="closePopup()">&times;</span>
+      <img id="animal-image" src="" alt="Animal Image">
+      <div id="animal-info" class="animal-info"></div>
+    </div>
+  </div>
 
     <script>
     var cards = [
@@ -132,287 +117,235 @@ var cardInfoMap = {
 
 };
 
-        
-
     var gameBoard = document.getElementById('gameBoard');
-  var flippedCards = [];
-  var matchedCards = [];
-  var isPopupOpen = false;
-
+    var flippedCards = [];
+    var matchedCards = [];
+    var isPopupOpen = false;
     var timerElement = document.getElementById('timer');
     var seconds = 0;
     var timerInterval;
-
     var leaderboard = JSON.parse(localStorage.getItem('leaderboard')) || [];
 
     cards.sort(() => Math.random() - 0.5);
 
-    for (var i = 0; i < cards.length; i++) {
-        var card = document.createElement('div');
-        card.className = 'card';
-        card.dataset.value = cards[i];
-        gameBoard.appendChild(card);
-        card.addEventListener('click', flipCard);
-    }
-
     function flipCard() {
-        if (flippedCards.length < 2 && !matchedCards.includes(this)) {
-            this.style.backgroundImage = `url(${this.dataset.value})`;
-            this.classList.add('hidden');
-            flippedCards.push(this);
+      if (flippedCards.length < 2 && !matchedCards.includes(this)) {
+        this.style.backgroundImage = `url(${this.dataset.value})`;
+        this.classList.add('hidden');
+        flippedCards.push(this);
 
-            if (flippedCards.length === 2) {
-                setTimeout(checkForMatch, 1000);
-            }
+        if (flippedCards.length === 2) {
+          setTimeout(checkForMatch, 1000);
         }
+      }
     }
 
-    var isPopupOpen = false; // Add this variable to track the pop-up state
-        
-        
+    function checkForMatch() {
+      var card1 = flippedCards[0];
+      var card2 = flippedCards[1];
 
-function checkForMatch() {
-  var card1 = flippedCards[0];
-  var card2 = flippedCards[1];
+      if (card1.dataset.value === card2.dataset.value) {
+        matchedCards.push(card1, card2);
+        card1.removeEventListener('click', flipCard);
+        card2.removeEventListener('click', flipCard);
 
-  if (card1.dataset.value === card2.dataset.value) {
-    matchedCards.push(card1, card2);
-    card1.removeEventListener('click', flipCard);
-    card2.removeEventListener('click', flipCard);
+        if (!isPopupOpen) {
+          showPopup(card1.dataset.value);
+          isPopupOpen = true;
+          clearInterval(timerInterval);
+        }
+      } else {
+        card1.style.backgroundImage = '';
+        card1.classList.remove('hidden');
+        card2.style.backgroundImage = '';
+        card2.classList.remove('hidden');
+      }
 
-    if (!isPopupOpen) {
-  
-  showPopup(card1.dataset.value);
-  isPopupOpen = true; // Set the pop-up state to open
-  clearInterval(timerInterval); // Stop the timer
-}
+      flippedCards = [];
 
-  } else {
-    card1.style.backgroundImage = '';
-    card1.classList.remove('hidden');
-    card2.style.backgroundImage = '';
-    card2.classList.remove('hidden');
-  }
-
-  flippedCards = [];
-
-  if (matchedCards.length === cards.length) {
-    var record = getRecord();
-    if (seconds < record || record === 0) {
-      setRecord(seconds);
-      alert('Congratulations! You have a new record!');
-    } else {
-      alert('Congratulations! You have won the game!');
+      if (matchedCards.length === cards.length) {
+        var record = getRecord();
+        if (seconds < record || record === 0) {
+          setRecord(seconds);
+          alert('Congratulations! You have a new record!');
+        } else {
+          alert('Congratulations! You have won the game!');
+        }
+      }
     }
-  }
-}
 
-function closePopup() {
-  var animalPopup = document.getElementById('animal-popup');
-  animalPopup.style.display = 'none';
-  isPopupOpen = false; // Set the pop-up state to closed
-  timerInterval = setInterval(updateTimer, 1000); // Resume the timer
-}
-
-function showPopup(cardValue) {
-    var cardInfo = cardInfoMap[cardValue];
-    if (cardInfo) {
-      document.getElementById('animal-popup').style.display = 'block';
-      document.getElementById('animal-image').src = cardInfo.image;
-      document.getElementById('animal-info').innerHTML = cardInfo.info;
+    function closePopup() {
+      var animalPopup = document.getElementById('animal-popup');
+      animalPopup.style.display = 'none';
+      isPopupOpen = false;
+      timerInterval = setInterval(updateTimer, 1000);
     }
-  }
 
-  // Create the cards dynamically using JavaScript
-  for (var i = 0; i < cards.length; i++) {
-    var card = document.createElement('div');
-    card.className = 'card';
-    card.dataset.value = cards[i];
-    gameBoard.appendChild(card);
-    card.addEventListener('click', flipCard);
-  }
-
-
+    function showPopup(cardValue) {
+      var cardInfo = cardInfoMap[cardValue];
+      if (cardInfo) {
+        document.getElementById('animal-popup').style.display = 'block';
+        document.getElementById('animal-image').src = cardInfo.image;
+        document.getElementById('animal-info').innerHTML = cardInfo.info;
+      }
+    }
 
     function restartGame() {
-    gameBoard.innerHTML = '';
-    flippedCards = [];
-    matchedCards = [];
-    seconds = 0;
-    timerElement.textContent = '0s';
+      gameBoard.innerHTML = '';
+      flippedCards = [];
+      matchedCards = [];
+      seconds = 0;
+      timerElement.textContent = '0s';
+      cards.sort(() => Math.random() - 0.5);
 
-    cards.sort(() => Math.random() - 0.5);
-
-    for (var i = 0; i < cards.length; i++) {
+      for (var i = 0; i < cards.length; i++) {
         var card = document.createElement('div');
         card.className = 'card';
         card.dataset.value = cards[i];
         gameBoard.appendChild(card);
         card.addEventListener('click', flipCard);
+      }
+
+      clearInterval(timerInterval);
+      timerInterval = setInterval(updateTimer, 1000);
+
+      isPopupOpen = false;
     }
 
-    clearInterval(timerInterval);
-    timerInterval = setInterval(updateTimer, 1000);
-    
-    isPopupOpen = false; // Reset the pop-up state
-}
-
-
     function updateTimer() {
-        seconds++;
-        timerElement.textContent = `${seconds}s`;
+      seconds++;
+      timerElement.textContent = `${seconds}s`;
     }
 
     function getRecord() {
-        return leaderboard.length > 0 ? leaderboard[0].time : 0;
+      return leaderboard.length > 0 ? leaderboard[0].time : 0;
     }
 
     function setRecord(time) {
-  // Create a modal to input the player's name
-  var modal = document.createElement('div');
-  modal.className = 'modal';
-  
-  var modalContent = document.createElement('div');
-  modalContent.className = 'modal-content';
-  modal.appendChild(modalContent);
+      var modal = document.createElement('div');
+      modal.className = 'modal';
+      var modalContent = document.createElement('div');
+      modalContent.className = 'modal-content';
+      modal.appendChild(modalContent);
+      var nameInput = document.createElement('input');
+      nameInput.setAttribute('type', 'text');
+      nameInput.setAttribute('placeholder', 'Enter your name');
+      var submitButton = document.createElement('button');
+      submitButton.textContent = 'Submit';
+      modalContent.appendChild(nameInput);
+      modalContent.appendChild(submitButton);
 
-  var nameInput = document.createElement('input');
-  nameInput.setAttribute('type', 'text');
-  nameInput.setAttribute('placeholder', 'Enter your name');
-  
-  var submitButton = document.createElement('button');
-  submitButton.textContent = 'Submit';
-
-  modalContent.appendChild(nameInput);
-  modalContent.appendChild(submitButton);
-
-  // Function to handle submit
-  submitButton.addEventListener('click', function() {
-    var playerName = nameInput.value;
+      submitButton.addEventListener('click', function () {
+        var playerName = nameInput.value;
     if (playerName.trim() !== '') {
-      // Create a new record object with player name and time
-      var newRecord = {
-        name: playerName,
-        time: time
-      };
+          var newRecord = {
+            name: playerName,
+            time: time
+          };
 
-      leaderboard.push(newRecord);
+          leaderboard.push(newRecord);
 
-      // Sort the leaderboard based on time
-      leaderboard.sort((a, b) => a.time - b.time);
+          leaderboard.sort((a, b) => a.time - b.time);
 
-      // Keep only the top 20 records
-      if (leaderboard.length > 20) {
-        leaderboard.pop(); // Remove the last (highest time) record if there are more than 20
-      }
+          if (leaderboard.length > 20) {
+            leaderboard.pop();
+          }
 
-      // Store the updated leaderboard in local storage
-      localStorage.setItem('leaderboard', JSON.stringify(leaderboard));
+          localStorage.setItem('leaderboard', JSON.stringify(leaderboard));
 
-      displayLeaderboard();
+          displayLeaderboard();
 
-      // Close the modal
-      document.body.removeChild(modal);
+          document.body.removeChild(modal);
+        }
+      });
+
+      document.body.appendChild(modal);
     }
-  });
-
-  // Append the modal to the body
-  document.body.appendChild(modal);
-}
-
-
-
-// ...
 
     function displayLeaderboard() {
-  var leaderboardElement = document.getElementById('leaderboard');
-  leaderboardElement.innerHTML = '';
+      var leaderboardElement = document.getElementById('leaderboard');
+      leaderboardElement.innerHTML = '';
 
-  var leaderboardTitle = document.createElement('h2');
-  leaderboardTitle.textContent = 'Leaderboard';
-  leaderboardElement.appendChild(leaderboardTitle);
+      var leaderboardTitle = document.createElement('h2');
+      leaderboardTitle.textContent = 'Leaderboard';
+      leaderboardElement.appendChild(leaderboardTitle);
 
-  if (leaderboard.length > 0) {
-    var leaderboardTable = document.createElement('table');
-    leaderboardElement.appendChild(leaderboardTable);
+      if (leaderboard.length > 0) {
+        var leaderboardTable = document.createElement('table');
+        leaderboardElement.appendChild(leaderboardTable);
 
-    var tableHeader = document.createElement('thead');
-    var headerRow = document.createElement('tr');
-    var rankHeader = document.createElement('th');
-    var playerHeader = document.createElement('th');
-    var timeHeader = document.createElement('th');
+        var tableHeader = document.createElement('thead');
+        var headerRow = document.createElement('tr');
+        var rankHeader = document.createElement('th');
+        var playerHeader = document.createElement('th');
+        var timeHeader = document.createElement('th');
 
-    rankHeader.textContent = 'Rank';
-    playerHeader.textContent = 'Player Name';
-    timeHeader.textContent = 'Time';
+        rankHeader.textContent = 'Rank';
+        playerHeader.textContent = 'Player Name';
+        timeHeader.textContent = 'Time';
 
-    rankHeader.className = 'rank'; // Add rank class
-    playerHeader.className = 'player-name'; // Add player-name class
-    timeHeader.className = 'time'; // Add time class
+        rankHeader.className = 'rank';
+        playerHeader.className = 'player-name';
+        timeHeader.className = 'time';
 
-    headerRow.appendChild(rankHeader);
-    headerRow.appendChild(playerHeader);
-    headerRow.appendChild(timeHeader);
+        headerRow.appendChild(rankHeader);
+        headerRow.appendChild(playerHeader);
+        headerRow.appendChild(timeHeader);
 
-    tableHeader.appendChild(headerRow);
-    leaderboardTable.appendChild(tableHeader);
+        tableHeader.appendChild(headerRow);
+        leaderboardTable.appendChild(tableHeader);
 
-    var leaderboardList = document.createElement('tbody');
-    leaderboardTable.appendChild(leaderboardList);
+        var leaderboardList = document.createElement('tbody');
+        leaderboardTable.appendChild(leaderboardList);
 
-    leaderboard.forEach(function (record, index) {
-      var listItem = document.createElement('tr');
-      var rankCell = document.createElement('td');
-      var playerCell = document.createElement('td');
-      var timeCell = document.createElement('td');
+        leaderboard.forEach(function (record, index) {
+          var listItem = document.createElement('tr');
+          var rankCell = document.createElement('td');
+          var playerCell = document.createElement('td');
+          var timeCell = document.createElement('td');
 
-      rankCell.textContent = index + 1;
-      playerCell.textContent = record.name;
-      timeCell.textContent = record.time + 's';
+          rankCell.textContent = index + 1;
+          playerCell.textContent = record.name;
+          timeCell.textContent = record.time + 's';
 
-      listItem.appendChild(rankCell);
-      listItem.appendChild(playerCell);
-      listItem.appendChild(timeCell);
+          listItem.appendChild(rankCell);
+          listItem.appendChild(playerCell);
+          listItem.appendChild(timeCell);
 
-      leaderboardList.appendChild(listItem);
-    });
+          leaderboardList.appendChild(listItem);
+        });
 
-    leaderboardElement.appendChild(leaderboardTable);
-  } else {
-    var noRecordMessage = document.createElement('p');
-    noRecordMessage.textContent = 'No records yet.';
-    leaderboardElement.appendChild(noRecordMessage);
-  }
-}
-
-
-
+        leaderboardElement.appendChild(leaderboardTable);
+      } else {
+        var noRecordMessage = document.createElement('p');
+        noRecordMessage.textContent = 'No records yet.';
+        leaderboardElement.appendChild(noRecordMessage);
+      }
+    }
 
     function showAnimalInfo(animalName) {
-  var animalData = getAnimalData(animalName);
-  if (animalData) {
-    document.getElementById('animal-popup').style.display = 'block';
-    document.getElementById('animal-image').src = animalData.imageURL;
-    document.getElementById('animal-info').textContent = animalData.info;
-  }
-}
+      var animalData = getAnimalData(animalName);
+      if (animalData) {
+        document.getElementById('animal-popup').style.display = 'block';
+        document.getElementById('animal-image').src = animalData.imageURL;
+        document.getElementById('animal-info').textContent = animalData.info;
+      }
+    }
 
-function getAnimalData(animalName) {
-  // Define information and image URLs for each animal
-  var animalInfo = {
-    'Turtle': {
-      info: 'Turtles are reptiles and many species are threatened or endangered due to habitat destruction and poaching.',
-      imageURL: 'img/turtle.jpg'
-    },
-    // Add more animals and their information here
-  };
+    function getAnimalData(animalName) {
+      var animalInfo = {
+        'Turtle': {
+          info: 'Turtles are reptiles and many species are threatened or endangered due to habitat destruction and poaching.',
+          imageURL: 'img/turtle.jpg'
+        },
+        // Add more animals and their information here
+      };
 
-  return animalInfo[animalName];
-}
-
+      return animalInfo[animalName];
+    }
 
     displayLeaderboard();
     restartGame();
-    </script>
+  </script>
 </body>
 </html>
