@@ -17,7 +17,7 @@ h1 {
 }
 
 @font-face {
-  font-family: 'modak';
+  font-family: 'modak', Arial;
   src: url('modak-regular.ttf') format('ttf');
   /* Add additional src entries for other font formats if necessary */
 }
@@ -42,7 +42,7 @@ body {
 
 .popup-content {
     background: #fff;
-    width: 70%;
+    width: 80%;
     height: 70%;
     margin: 100px auto;
     padding: 30px;
