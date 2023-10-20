@@ -333,12 +333,56 @@ var cardInfoMap = {
     }
 
     function getAnimalData(animalName) {
-      var animalInfo = {
-        'Turtle': {
-          info: 'Turtles are reptiles and many species are threatened or endangered due to habitat destruction and poaching.',
-          imageURL: 'img/turtle.jpg'
-        },
-        // Add more animals and their information here
+      var cardInfoMap = {
+  'img/1.png': {
+     info: '<p>Status: Vulnerable</p>\n<p>Threats to Species: Climate Change (Habitat Loss), Pollution</p>\n<p>Region: The Arctic</p>\n<p>Polar Bears have white fur and a thick layer of fat: but did you know they have black skin? Among other bears, polar bears are one of the largest and strongest! They’re usually solitary, save for mothers with cubs, couples, and the occasional alliances made between bears!</p>\n<p>They prefer to hunt seals due to their energy-rich blubber, but have also hunted beluga whales and walruses. Polar bears are clever, and have different hunting methods for different prey! For seals on land, they keep their head low and carefully close the distance, unseen… before suddenly charging, trying to catch them before they escape through an ice hole!</p>',
+    image: 'img/pbinfo.png',
+  },
+  'img/2.png': {
+    info: '<p>Status: Vulnerable</p>\n<p>Threats to Species:</p> Habitat Loss, Illegal Wildlife trade, Trophy Hunting\n<p>Region: Africa, Central Asia, India, China\n<p>Leopards rely on stealth, an acute sense of hearing, and superior vision to hunt. Solitary hunters, most prefer to hunt during the night, from dusk to dawn. They stalk their prey as close as they can, undetected... before <strong>pouncing,</strong> ambushing it!</p>\n<p>Leopards have strong jaws: enough to drag larger, heavier prey up into the trees with them to eat. Some are stored safely away in trees, bushes, or even in caves as a private food supply to snack on later. This is to avoid competition, who might want to eat some of the wild cat’s share!</p>',
+    image: 'img/linfo.png',
+  },
+  'img/3.png': {
+    info: '<p>Status: Endangered</p>\n<p>Threats to Species: Drainage, Overgrazing, Pesticide Pollution</p>\n<p>Region: Sub-Saharan Africa</p>\n<p>This species time their breeding season around rain! In Southern Africa, they time it with rainfall. In East Africa, the species breeds all year round, but prefer drier periods. Breeding and courtship displays involve dancing, bowing, and jumping; and both sexes dance for each other.\nGrey Crowned Cranes are omnivores, eating food like insects, plants, snakes, small fish, and worms. They stamp their feet to make insects scatter so they may catch and eat them!\nThis beautiful bird is also the national bird of Uganda, and is found on the country’s flag! </p>',
+    image: 'img/gcinfo.png',
+  },
+  'img/4.png': {
+    info: '<p>Status: Endangered</p>\n<p>Threats to Species: Pollution, Poaching, Habitat Loss</p>\n<p>Region: Worldwide (Tropical & Subtropical Waters)</p>\n<p>The Green Sea Turtle earned its name not from the colour of its shell, but the green fat underneath! The colour comes from its plant-based diet!</p>\n<p>Juveniles start out with a carnivorous diet, eating fish, jellyfish, crustaceans, and eggs of other animals. As they become adults, they start eating algae, sea grasses, and other plants: most adults are strictly herbivores!</p>\n<p>Humans and tiger sharks are the main predators of adult green sea turtles. Juveniles and hatchlings have crabs and shorebirds, and scavengers like to eat the turtles’ eggs! On top of that, many sea turtles have to deal with parasites like barnacles and leeches!</p>',
+    image: 'img/ttinfo.png',
+  },
+  'img/5.png': {
+    info: '<p>Status: Endangered</p>\n<p>Threats to Species: Pollution, Disease, Climate Change, Scarce Food, Invasive Species</p>\n<p>Region: Galápagos Islands</p>\n<p>This seal species is the smallest of all furred ear seals! They also don’t have constant predators; sharks and orcas, the main predators for seals, don’t usually have migratory patterns that pass by the Galápagos.</p>\n<p>Among all seal species, the Galapagos Fur Seals have the lowest reproductive rates, and seal pups take a long time to become independent. They are born one at a time, and spend their first 18 months relying on their mother’s milk; but this sadly can be delayed up to 3 years if conditions are poor!</p>\n<p>If they make it, their new diet consists of fish, squid, and shellfish. Food found closer to the shores, and they like to hunt at night so it’s easier to hunt for them!</p>',
+    image: 'img/sinfo.png',
+  },
+  'img/6.png': {
+    info: '<p>Status: Endangered</p>\n<p>Threats to Species: Habitat Loss (Building Development, Cow Manure Dumping), Pollution, Invasive Species, Vehicle Use</p>\n<p>Region: Delhi Sand Dunes (Southern California)</p>\n<p>The Delhi Sands Flower-Loving Fly is the first fly species to be listed on the Endangered Species List in the US.</p>\n<p>This insect lives almost its entire life underground: only emerging as adults in early summer, becoming active for a few weeks each year to feed on flowers from June to September.</p>\n<p>Researchers don’t yet know how long their average lifespans are! In fact, there’s only an educated guess that their larval stage lasts for 2 years! Similarly, it’s rare to see this fly feeding- and it only seems to feed from just one plant: the flowers of the California buckwheat.</p>\n<p>Being an insect, it has many enemies. Its predators include the Argentine ant, other large flies… and suspected predators like birds and dragonflies. One thing’s for sure: this species sure is a mysterious one!</p>',
+    image: 'img/dhinfo.png',
+  },
+  'img/delhi.png': {
+    info: '<p>Status: Endangered</p>\n<p>Threats to Species: Habitat Loss (Building Development, Cow Manure Dumping), Pollution, Invasive Species, Vehicle Use</p>\n<p>Region: Delhi Sand Dunes (Southern California)</p>\n<p>The Delhi Sands Flower-Loving Fly is the first fly species to be listed on the Endangered Species List in the US.</p>\n<p>This insect lives almost its entire life underground: only emerging as adults in early summer, becoming active for a few weeks each year to feed on flowers from June to September.</p>\n<p>Researchers don’t yet know how long their average lifespans are! In fact, there’s only an educated guess that their larval stage lasts for 2 years! Similarly, it’s rare to see this fly feeding- and it only seems to feed from just one plant: the flowers of the California buckwheat.</p>\n<p>Being an insect, it has many enemies. Its predators include the Argentine ant, other large flies… and suspected predators like birds and dragonflies. One thing’s for sure: this species sure is a mysterious one!</p>',
+    image: 'img/dhinfo.png',
+  },
+  'img/crane.png': {
+    info: '<p>Status: Endangered</p>\n<p>Threats to Species: Drainage, Overgrazing, Pesticide Pollution</p>\n<p>Region: Sub-Saharan Africa</p>\n<p>This species time their breeding season around rain! In Southern Africa, they time it with rainfall. In East Africa, the species breeds all year round, but prefer drier periods. Breeding and courtship displays involve dancing, bowing, and jumping; and both sexes dance for each other.\nGrey Crowned Cranes are omnivores, eating food like insects, plants, snakes, small fish, and worms. They stamp their feet to make insects scatter so they may catch and eat them!\nThis beautiful bird is also the national bird of Uganda, and is found on the country’s flag! </p>',
+    image: 'img/gcinfo.png',
+  },
+  'img/polarb.png': {
+    info: '<p>Status: Vulnerable</p>\n<p>Threats to Species: Climate Change (Habitat Loss), Pollution</p>\n<p>Region: The Arctic</p>\n<p>Polar Bears have white fur and a thick layer of fat: but did you know they have black skin? Among other bears, polar bears are one of the largest and strongest! They’re usually solitary, save for mothers with cubs, couples, and the occasional alliances made between bears!</p>\n<p>They prefer to hunt seals due to their energy-rich blubber, but have also hunted beluga whales and walruses. Polar bears are clever, and have different hunting methods for different prey! For seals on land, they keep their head low and carefully close the distance, unseen… before suddenly charging, trying to catch them before they escape through an ice hole!</p>',
+    image: 'img/pbinfo.png',
+  },
+  'img/seal.png': {
+    info: '<p>Status: Endangered</p>\n<p>Threats to Species: Pollution, Disease, Climate Change, Scarce Food, Invasive Species</p>\n<p>Region: Galápagos Islands</p>\n<p>This seal species is the smallest of all furred ear seals! They also don’t have constant predators; sharks and orcas, the main predators for seals, don’t usually have migratory patterns that pass by the Galápagos.</p>\n<p>Among all seal species, the Galapagos Fur Seals have the lowest reproductive rates, and seal pups take a long time to become independent. They are born one at a time, and spend their first 18 months relying on their mother’s milk; but this sadly can be delayed up to 3 years if conditions are poor!</p>\n<p>If they make it, their new diet consists of fish, squid, and shellfish. Food found closer to the shores, and they like to hunt at night so it’s easier to hunt for them!</p>',
+    image: 'img/sinfo.png',
+  },
+  'img/turtle.png': {
+    info: '<p>Status: Endangered</p>\n<p>Threats to Species: Pollution, Poaching, Habitat Loss</p>\n<p>Region: Worldwide (Tropical & Subtropical Waters)</p>\n<p>The Green Sea Turtle earned its name not from the colour of its shell, but the green fat underneath! The colour comes from its plant-based diet!</p>\n<p>Juveniles start out with a carnivorous diet, eating fish, jellyfish, crustaceans, and eggs of other animals. As they become adults, they start eating algae, sea grasses, and other plants: most adults are strictly herbivores!</p>\n<p>Humans and tiger sharks are the main predators of adult green sea turtles. Juveniles and hatchlings have crabs and shorebirds, and scavengers like to eat the turtles’ eggs! On top of that, many sea turtles have to deal with parasites like barnacles and leeches!</p>',
+    image: 'img/ttinfo.png',
+  },
+  'img/leop.png': {
+    info: '<p>Status: Vulnerable</p>\n<p>Threats to Species:</p> Habitat Loss, Illegal Wildlife trade, Trophy Hunting\n<p>Region: Africa, Central Asia, India, China\n<p>Leopards rely on stealth, an acute sense of hearing, and superior vision to hunt. Solitary hunters, most prefer to hunt during the night, from dusk to dawn. They stalk their prey as close as they can, undetected... before <strong>pouncing,</strong> ambushing it!</p>\n<p>Leopards have strong jaws: enough to drag larger, heavier prey up into the trees with them to eat. Some are stored safely away in trees, bushes, or even in caves as a private food supply to snack on later. This is to avoid competition, who might want to eat some of the wild cat’s share!</p>',
+    image: 'img/linfo.png',
+  },
+
       };
 
       return animalInfo[animalName];
