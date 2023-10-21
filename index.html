@@ -1,155 +1,157 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-  <title>Endangered Allies Memory Game</title>
-  <link rel="stylesheet" type="text/css" href="main.css">
-  <link rel="preload" href="Modak-Regular.ttf" as="font" type="font/ttf" crossorigin>
-  <style>
-    h1 img {
-      max-width: 100%;
-      height: auto;
-    }
-    #timer {
-      font-size: 40px;
-    }
-    #leaderboard {
-      font-size: 50px;
-    }
-      
-      body {
-    margin: 0;
-    padding: 0;
-    overflow: hidden;
-}
-      
-      
+    <title>Endangered Allies Memory Game</title>
+    <link rel="stylesheet" type="text/css" href="main.css">
+    <link rel="preload" href="Modak-Regular.ttf" as="font" type="font/ttf" crossorigin>
+    <style>
+        h1 img {
+            max-width: 100%;
+            height: auto;
+        }
 
-.playpopup {
-    display: none;
-    background-image: url('img/htp.png'); /* Replace with your background image */
-    background-size: cover;
-    background-position: center;
-    position: fixed;
-    top: 50%;
-    bottom: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 50%;
-    height: 90%;
-    z-index: 0;
-    border-radius: 40px;
-    
-}
-      
-      
-    .play-button {
-      position:fixed;
-      bottom: 415px;
-      left: 50%;
-      transform: translateX(-50%);
-        width: 24%;
-    height: 9%;
-        border-radius: 40px;
-        font-size: 45px;
-        font-family: 'modak', Arial;
-        background-color: #fac078;
-        cursor: pointer;
-        border: none;
-         color: white;
-            
+        #timer {
+            font-size: 40px;
+        }
+
+        #leaderboard {
+            font-size: 50px;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+        }
+
+        .playpopup {
+            display: none;
+            background-image: url('img/htp.png'); /* Replace with your background image */
+            background-size: cover;
+            background-position: center;
+            position: fixed;
+            top: 50%;
+            bottom: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 550px;
+            height: 600px;
+            z-index: 0;
+            border-radius: 40px;
+        }
+
+        .play-button {
+            position: fixed;
+            bottom: 25px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 24%;
+            height: 8%;
+            border-radius: 40px;
+            font-size: 45px;
+            font-family: 'modak', Arial;
+            background-color: #fac078;
+            cursor: pointer;
+            border: none;
+            color: white;
+        }
+
+        .play-button:hover {
+            background-color: white;
+            color: #fac078;
+        }
         
-    }
-      
-      .play-button:hover {
-    background-color: white;
-          color: #fac078;
+        html, body {
+    overflow: auto;
+    height: 100%;
 }
-      
-  </style>
+
+        
+    </style>
 </head>
+
 <body>
-  <h1><img src="img/title.png" alt="Memory Game"></h1>
+    <h1><img src="img/title.png" alt="Memory Game"></h1>
 
-  <div id="gameBoard"></div>
-  <p id="timer"></p>
-  <button onclick="restartGame()">Restart</button>
+    <div id="gameBoard"></div>
+    <p id="timer">0s</p>
+    <button onclick="restartGame()">Restart</button>
 
-  <div id="leaderboard">
-    <img src="img/leaderboard.png" alt="Leaderboard Title" width="200" height="100">
-  </div>
-
-  <div id="animal-popup" class="popup">
-    <div class="popup-content">
-      <span class="close" onclick="closePopup()">&times;</span>
-      <img id="animal-image" src="" alt="Animal Image">
-      <div id="animal-info" class="animal-info"></div>
+    <div id="leaderboard">
+        <img src="img/leaderboard.png" alt="Leaderboard Title" width="200" height="100">
     </div>
-  </div>
-    
-      <audio id="cardClickSound">
-    <source src="audio/card_clicking.mp3" type="audio/mpeg">
-  </audio>
-  <audio id="matchSound">
-    <source src="audio/match.mp3" type="audio/mpeg">
-  </audio>
-  <audio id="mismatchSound">
-    <source src="audio/mismatch.mp3" type="audio/mpeg">
-  </audio>
-  <audio id="newRecordSound" src="audio/new_record_sound.mp3"></audio>
-   <audio id="bgmSound" loop autoplay>
-  <source src="audio/background-music.mp3" type="audio/mpeg">
+
+    <div id="animal-popup" class="popup">
+        <div class="popup-content">
+            <span class="close" onclick="closePopup()">&times;</span>
+            <img id="animal-image" src="" alt="Animal Image">
+            <div id="animal-info" class="animal-info"></div>
+        </div>
+    </div>
+
+    <audio id="cardClickSound">
+        <source src="audio/card_clicking.mp3" type="audio/mpeg">
+    </audio>
+    <audio id="matchSound">
+        <source src="audio/match.mp3" type="audio/mpeg">
+    </audio>
+    <audio id="mismatchSound">
+        <source src="audio/mismatch.mp3" type="audio/mpeg">
+    </audio>
+    <audio id="newRecordSound">
+        <source src="audio/new_record_sound.mp3" type="audio/mpeg">
+    </audio>
+    <audio id="bgmSound" loop autoplay>
+        <source src="audio/background-music.mp3" type="audio/mpeg">
     </audio>
 
-<div class="playpopup" id="playpopup">
-    <button class="play-button" onclick="playBackgroundMusic()">Play</button>
-  </div>
+    <div class="playpopup" id="playpopup">
+        <button class="play-button" onclick="playBackgroundMusic()">Play</button>
+    </div>
 
-  <script>
-      
+    <script>
+        var cards = [
+            'img/1.png',
+            'img/1.png',
+            'img/2.png',
+            'img/2.png',
+            'img/3.png',
+            'img/3.png',
+            'img/4.png',
+            'img/4.png',
+            'img/5.png',
+            'img/5.png',
+            'img/6.png',
+            'img/6.png',
+            'img/del.png',
+            'img/del.png',
+            'img/cr.png',
+            'img/cr.png',
+            'img/polarb.png',
+            'img/polarb.png',
+            'img/seal.png',
+            'img/seal.png',
+            'img/turtle.png',
+            'img/turtle.png',
+            'img/leop.png',
+            'img/leop.png'
+        ];
 
-        
-    var cards = [
-        'img/1.png',
-        'img/1.png',
-        'img/2.png',
-        'img/2.png',
-        'img/3.png',
-        'img/3.png',
-        'img/4.png',
-        'img/4.png',
-        'img/5.png',
-        'img/5.png',
-        'img/6.png',
-        'img/6.png',
-        'img/del.png',
-        'img/del.png',
-        'img/cr.png',
-        'img/cr.png',
-        'img/polarb.png',
-        'img/polarb.png',
-        'img/seal.png',
-        'img/seal.png',
-        'img/turtle.png',
-        'img/turtle.png',
-        'img/leop.png',
-        'img/leop.png'
-    ];
-        
-    
-      function showPlayPopup() {
-      document.getElementById('playpopup').style.display = 'block';
-    }
+        function showPlayPopup() {
+            document.getElementById('playpopup').style.display = 'block';
+        }
 
-    function playBackgroundMusic() {
-      var bgmSound = document.getElementById('bgmSound');
-      bgmSound.play();
-      closePlayPopup();
-    }
+        function playBackgroundMusic() {
+            var bgmSound = document.getElementById('bgmSound');
+            bgmSound.play();
+            closePlayPopup();
+            startGame();
+        }
 
-    function closePlayPopup() {
-      document.getElementById('playpopup').style.display = 'none';
-    }
-
+        function closePlayPopup() {
+            document.getElementById('playpopup').style.display = 'none';
+        }
     // Call showPlayPopup() when the user first arrives
     showPlayPopup();
       
@@ -215,6 +217,15 @@ var cardInfoMap = {
     var leaderboard = JSON.parse(localStorage.getItem('leaderboard')) || [];
 
     cards.sort(() => Math.random() - 0.5);
+      
+      for (var i = 0; i < cards.length; i++) {
+        var card = document.createElement('div');
+        card.className = 'card';
+        card.dataset.value = cards[i];
+        gameBoard.appendChild(card);
+        card.addEventListener('click', flipCard);
+    }
+
 
     function flipCard() {
         document.getElementById('cardClickSound').play();
@@ -292,9 +303,21 @@ var cardInfoMap = {
       }
     }
         
-        
+        function startGame() {
+      // Hide the play button and start the timer
+      var playButton = document.querySelector('.play-button');
+      playButton.style.display = 'none';
+
+      // Start the timer
+      timerInterval = setInterval(updateTimer, 1000);
+
+      // Shuffle and create the card grid
+      restartGame();
+    }
+
 
     function restartGame() {
+      // Clear the game board and reset variables
       gameBoard.innerHTML = '';
       flippedCards = [];
       matchedCards = [];
@@ -310,13 +333,8 @@ var cardInfoMap = {
         card.addEventListener('click', flipCard);
       }
 
-      clearInterval(timerInterval);
-      timerInterval = setInterval(updateTimer, 1000);
-
       isPopupOpen = false;
-    
-}
-    
+    }
 
     function updateTimer() {
       seconds++;
