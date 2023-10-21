@@ -45,23 +45,15 @@
   <audio id="mismatchSound">
     <source src="audio/mismatch.mp3" type="audio/mpeg">
   </audio>
-  <audio id="newRecordSound">
-    <source src="audio/new_record_sound.mp3" type="audio/mpeg">
-  </audio>
-   <audio id="bgm" loop autoplay>
+  <audio id="newRecordSound" src="audio/new_record_sound.mp3"></audio>
+   <audio id="bgmSound" loop autoplay>
   <source src="audio/background-music.mp3" type="audio/mpeg">
-</audio>
+    </audio>
+
 
 
   <script>
-    window.addEventListener('load', function() {
-      var bgmAudio = document.getElementById('bgm');
-      if (bgmAudio) {
-        bgmAudio.play();
-      } else {
-        console.error('Element with id "bgm" not found.');
-      }
-  });
+      
         
     var cards = [
         'img/1.png',
@@ -167,6 +159,13 @@ var cardInfoMap = {
       }
     }
 
+          function playNewRecordSound() {
+      var newRecordAudio = document.getElementById("newRecordSound");
+      newRecordAudio.play();
+    }
+
+    
+      
     function checkForMatch() {
   var card1 = flippedCards[0];
   var card2 = flippedCards[1];
@@ -299,17 +298,7 @@ var cardInfoMap = {
 
       document.body.appendChild(modal);
         
-       if (seconds < record || record === 0) {
-    var newRecordSound = document.getElementById('newRecordSound');
-    if (newRecordSound) {
-      newRecordSound.play(); // Play the new record sound
-    } else {
-      console.error('Element with id "newRecordSound" not found.');
-    }
-    alert('Congratulations! You have a new record!');
-  } else {
-    alert('Congratulations! You have won the game!');
-  }
+    
     }
 
     function displayLeaderboard() {
