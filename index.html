@@ -48,12 +48,21 @@
   <audio id="newRecordSound">
     <source src="audio/new_record_sound.mp3" type="audio/mpeg">
   </audio>
-  <audio id="bgm" preload="auto" loop autoplay>
-  <source src="audio/bgmu.mp3" type="audio/mpeg">
+   <audio id="bgm" autoplay loop>
+        <source src="audio/background-music.mp3" type="audio/mpeg">
 </audio>
 
 
     <script>
+        window.addEventListener('load', function() {
+    var bgmAudio = document.getElementById('bgm');
+    if (bgmAudio) {
+      bgmAudio.play();
+    } else {
+      console.error('Element with id "bgm" not found.');
+    }
+  });
+        
     var cards = [
         'img/1.png',
         'img/1.png',
@@ -213,6 +222,8 @@ var cardInfoMap = {
         document.getElementById('animal-info').innerHTML = cardInfo.info;
       }
     }
+        
+        
 
     function restartGame() {
       gameBoard.innerHTML = '';
@@ -234,12 +245,7 @@ var cardInfoMap = {
       timerInterval = setInterval(updateTimer, 1000);
 
       isPopupOpen = false;
-        var bgm = document.getElementById('bgm');
-  if (bgm) {
-    bgm.play(); // Start playing the background music
-  } else {
-    console.error('Element with id "bgm" not found.');
-  }
+    
 }
     
 
