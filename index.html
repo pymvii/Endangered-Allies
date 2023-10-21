@@ -48,19 +48,18 @@
   <audio id="newRecordSound">
     <source src="audio/new_record_sound.mp3" type="audio/mpeg">
   </audio>
-   <audio id="bgm" autoplay loop>
-        <source src="audio/background-music.mp3" type="audio/mpeg">
-</audio>
+   <audio id="bgm" loop>
+    <source src="audio/background-music.mp3" type="audio/mpeg">
+  </audio>
 
-
-    <script>
-        window.addEventListener('load', function() {
-    var bgmAudio = document.getElementById('bgm');
-    if (bgmAudio) {
-      bgmAudio.play();
-    } else {
-      console.error('Element with id "bgm" not found.');
-    }
+  <script>
+    window.addEventListener('load', function() {
+      var bgmAudio = document.getElementById('bgm');
+      if (bgmAudio) {
+        bgmAudio.play();
+      } else {
+        console.error('Element with id "bgm" not found.');
+      }
   });
         
     var cards = [
