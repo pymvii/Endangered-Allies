@@ -15,6 +15,55 @@
     #leaderboard {
       font-size: 50px;
     }
+      
+      body {
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+}
+      
+      
+
+.playpopup {
+    display: none;
+    background-image: url('img/htp.png'); /* Replace with your background image */
+    background-size: cover;
+    background-position: center;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 70%;
+    height: 90%;
+    z-index: 0;
+    border-radius: 40px;
+    
+}
+      
+      
+    .play-button {
+      position: absolute;
+      bottom: 530px;
+      left: 50%;
+      transform: translateX(-50%);
+        width: 24%;
+    height: 9%;
+        border-radius: 40px;
+        font-size: 60px;
+        font-family: 'modak', Arial;
+        background-color: #fac078;
+        cursor: pointer;
+        border: none;
+         color: white;
+            
+        
+    }
+      
+      .play-button:hover {
+    background-color: white;
+          color: #fac078;
+}
+      
   </style>
 </head>
 <body>
@@ -50,10 +99,13 @@
   <source src="audio/background-music.mp3" type="audio/mpeg">
     </audio>
 
-
+<div class="playpopup" id="playpopup">
+    <button class="play-button" onclick="playBackgroundMusic()">Play</button>
+  </div>
 
   <script>
       
+
         
     var cards = [
         'img/1.png',
@@ -83,6 +135,23 @@
     ];
         
     
+      function showPlayPopup() {
+      document.getElementById('playpopup').style.display = 'block';
+    }
+
+    function playBackgroundMusic() {
+      var bgmSound = document.getElementById('bgmSound');
+      bgmSound.play();
+      closePlayPopup();
+    }
+
+    function closePlayPopup() {
+      document.getElementById('playpopup').style.display = 'none';
+    }
+
+    // Call showPlayPopup() when the user first arrives
+    showPlayPopup();
+      
 var cardInfoMap = {
   'img/1.png': {
      info: '<p>Status: Vulnerable</p>\n<p>Threats to Species: Climate Change (Habitat Loss), Pollution</p>\n<p>Region: The Arctic</p>\n<p>Polar Bears have white fur and a thick layer of fat: but did you know they have black skin? Among other bears, polar bears are one of the largest and strongest! They’re usually solitary, save for mothers with cubs, couples, and the occasional alliances made between bears!</p>\n<p>They prefer to hunt seals due to their energy-rich blubber, but have also hunted beluga whales and walruses. Polar bears are clever, and have different hunting methods for different prey! For seals on land, they keep their head low and carefully close the distance, unseen… before suddenly charging, trying to catch them before they escape through an ice hole!</p>',
